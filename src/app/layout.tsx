@@ -1,19 +1,19 @@
-// import type { Metadata } from 'next';
-
 import './globals.css';
-
-export const metadata = {
-  title: ' Run Book',
-  description: 'An app to manage hospital runs for drivers',
-};
 
 export default function RootLayout({
   children,
+  metadata,
 }: {
   children: React.ReactNode;
+  metadata: { title: string; description: string };
 }) {
   return (
     <>
+      <head>
+        <title>Run Book</title>
+        <meta name="description" content='Run Book /' />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <main className="container mx-auto p-4">{children}</main>
     </>
   );
