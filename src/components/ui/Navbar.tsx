@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import SubHeading from './SubHeading';
-import DarkModeToggle from './DarkModeToggle';
+// import DarkModeToggle from './DarkModeToggle';
 import { motion, useAnimation } from 'framer-motion';
 import Image from 'next/image';
 
@@ -68,10 +68,10 @@ const Navbar = () => {
               {' '}
               {/* Logo Image */}
               <Image
-                src={'/me.jpeg'}
-                alt="Ryan Wilson logo"
-                width="60"
-                height="60"
+                src={'/img/logo.png'}
+                alt="Run Book Logo"
+                width="90"
+                height="90"
                 className="rounded-full border-2 border-button"
               />
               {/* SubHeading */}
