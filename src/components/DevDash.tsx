@@ -9,9 +9,12 @@ interface Run {
 }
 
 interface Stop {
-  id: number;
-  address: string;
-  // Add other stop properties as needed
+  stop_id: number;
+  run_id: number;
+  stop_order: number;
+  delivery_instructions: string;
+  pickup_instructions: string;
+  image_url: string;
 }
 
 interface Driver {
@@ -52,7 +55,9 @@ const DevDash = () => {
         <h2>Stops</h2>
         <ul>
           {stops.map((stop) => (
-            <li key={stop.id}>{stop.address}</li>
+            <li key={stop.stop_id}>
+              {stop.delivery_instructions} - {stop.pickup_instructions}
+            </li>
           ))}
         </ul>
       </div>
