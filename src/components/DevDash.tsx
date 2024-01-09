@@ -66,7 +66,7 @@ const DevDash = () => {
     }
 
   return (
-    <div className="dev-dash p-4 space-y-4 glass lg:w-3/4 mx-auto rounded">
+    <div className="dev-dash p-4 space-y-4 glass lg:w-3/4 mx-auto rounded-box">
       <motion.div
         className="runs mb-4"
         initial="hidden"
@@ -82,7 +82,7 @@ const DevDash = () => {
             <ul className="list-disc pl-5">
               {runs.map((run) => (
                 <li key={run.run_id} className="py-1">
-                  {run.run_label} Run
+                  {run.run_label}: Run
                 </li>
               ))}
             </ul>
@@ -115,7 +115,7 @@ const DevDash = () => {
                       <img
                         src={stop.image_url || placeholderImagePath}
                         alt="Stop"
-                        className="mt-2 h-auto rounded-lg shadow-md"
+                        className="mt-2 h-auto rounded-lg shadow-md bg-base-100 p-2 border-1 border-secondary"
                       />
                     )}
                   </div>
@@ -152,8 +152,8 @@ const DevDash = () => {
                     {driver.name}
                     <p>Email: {driver.email}</p>
                     <p>
-                      Run:{' '}
-                      {runAssigned ? runAssigned.run_label : 'No assigned run'}
+                      
+                      {runAssigned ? runAssigned.run_label : 'No assigned run'}:{' '}Run
                     </p>
                   </li>
                 );
