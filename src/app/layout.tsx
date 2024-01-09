@@ -12,7 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <html>
+      <html data-theme="dark">
         <head>
           <title>Run Book</title>
           <meta name="description" content="Run Book /" />
