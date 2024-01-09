@@ -3,13 +3,8 @@ import './globals.css';
 import Navbar from '@/components/ui/Navbar';
 
 
-export default function RootLayout({
-  children,
-  metadata,
-}: {
-  children: React.ReactNode;
-  metadata: { title: string; description: string };
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  
   return (
     <>
       <html data-theme="dark">
