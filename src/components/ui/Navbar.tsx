@@ -70,8 +70,8 @@ const Navbar = () => {
               <Image
                 src={'/img/logo.png'}
                 alt="Run Book Logo"
-                width="90"
-                height="90"
+                width="60"
+                height="60"
                 className="rounded-full border-2 border-button"
               />
               {/* SubHeading */}
