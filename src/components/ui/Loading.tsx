@@ -9,7 +9,7 @@ const Loading = () => {
           <span className="m-2">
             <span className="loading loading-bars loading-lg"></span>
           </span>{' '}
-          Loading.....the details ...☝🏾 any second now...⏱️
+          Loading.....the details ...☝🏾...⏱️
         </p>
       </div>
     </div>
