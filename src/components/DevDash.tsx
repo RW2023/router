@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { getRuns, getStops, getDrivers } from '@/utils/supabaseClient';
 import { motion } from 'framer-motion';
+import SubHeading from './ui/SubHeading';
 
 interface Run {
   id: number;
@@ -21,7 +22,9 @@ interface Stop {
 interface Driver {
   id: number;
   name: string;
-  // email: string;
+  email: string;
+  run_assignment: string;
+  run_label: string;
   // Add other driver properties as needed
 }
 
@@ -32,9 +35,9 @@ const DevDash = () => {
 
   useEffect(() => {
     // Fetch runs, stops, and drivers data
-    getRuns().then(data => setRuns(data || []));
-    getStops().then(data => setStops(data || []));
-    getDrivers().then(data => setDrivers(data || []));
+    getRuns().then((data) => setRuns(data || []));
+    getStops().then((data) => setStops(data || []));
+    getDrivers().then((data) => setDrivers(data || []));
   }, []);
 
   // Animation variants for framer-motion
@@ -43,8 +46,10 @@ const DevDash = () => {
     visible: { opacity: 1 },
   };
 
+  const placeholderImagePath = '/img/placeholder.png'; // Place the image in the public directory and use the path as a string
+
   return (
-    <div className="dev-dash p-4 space-y-4">
+    <div className="dev-dash p-4 space-y-4 glass">
       <motion.div
         className="runs mb-4"
         initial="hidden"
@@ -52,8 +57,10 @@ const DevDash = () => {
         variants={variants}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-lg font-bold mb-2">Runs</h2>
-        <div className="card bg-base-100 shadow-xl">
+        <SubHeading title="Runs" />
+
+        <div className="card bg-base-300 shadow-2xl">
+            <SubHeading title="Run List" />
           <div className="card-body">
             <ul className="list-disc pl-5">
               {runs.map((run) => (
@@ -73,16 +80,32 @@ const DevDash = () => {
         variants={variants}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <h2 className="text-lg font-bold mb-2">Stops</h2>
-        <div className="card bg-base-100 shadow-xl">
+        <SubHeading title="Stops" />
+
+        <div className="card bg-base-300 shadow-xl">
           <div className="card-body">
             <ul className="list-disc pl-5">
               {stops.map((stop) => (
                 <li key={stop.stop_id} className="py-1">
-                  <span className="font-semibold">Order {stop.stop_order}:</span> {stop.delivery_instructions} - {stop.pickup_instructions}
-                  {stop.image_url && (
-                    <img src={stop.image_url} alt="Stop" className="mt-2 max-w-xs rounded-lg shadow-md" />
-                  )}
+                  <p className="font-semibold">Stop # {stop.stop_order}:</p>
+                  <div className="card">
+                    <SubHeading title="Delivery Instructions" />
+                    <p>{stop.delivery_instructions}</p>
+                  </div>
+                  <div className="card-image">
+                    {stop.image_url && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={stop.image_url || placeholderImagePath}
+                        alt="Stop"
+                        className="mt-2 max-w-xs rounded-lg shadow-md"
+                      />
+                    )}
+                  </div>
+                  <div className="card">
+                    <SubHeading title="Pickup Instructions" />
+                    <p>{stop.pickup_instructions}</p>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -97,15 +120,16 @@ const DevDash = () => {
         variants={variants}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <h2 className="text-lg font-bold mb-2">Drivers</h2>
-        <div className="card bg-base-100 shadow-xl">
+        <SubHeading title="Drivers" />
+        <div className="card bg-base-300 shadow-xl">
           <div className="card-body">
             <ul className="list-disc pl-5">
               {drivers.map((driver) => (
                 <li key={driver.id} className="py-1">
                   {driver.name}
                   {/* Uncomment if you have more information to display */}
-                  {/* <p>Email: {driver.email}</p> */}
+                  <p>Email: {driver.email}</p>
+                  <p>Run: {driver.run_label}</p>
                 </li>
               ))}
             </ul>
