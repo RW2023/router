@@ -66,7 +66,7 @@ const DevDash = () => {
     }
 
   return (
-    <div className="dev-dash p-4 space-y-4 glass">
+    <div className="dev-dash p-4 space-y-4 glass lg:w-3/4 mx-auto rounded">
       <motion.div
         className="runs mb-4"
         initial="hidden"
