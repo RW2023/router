@@ -90,7 +90,7 @@ const DevDash = () => {
             <ul className="list-disc pl-5">
               {runs.map((run) => (
                 <li key={run.run_id} className="py-1">
-                  <p>Run Label: {run.run_label}</p>
+                  <p>{run.run_label} {' '}: Run</p>
                   <p>Hospital: {run.hospital_name}</p>
                   <p>Day of the Week: {run.day_of_week}</p>
                   <p>Description: {run.description}</p>
