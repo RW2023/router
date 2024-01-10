@@ -6,11 +6,19 @@ import SubHeading from './ui/SubHeading';
 import Loading from './ui/Loading';
 
 interface Run {
-  run_id: number; // replacing 'id' with 'run_id'
-  description: string;
+  run_id: number;
   run_label: string;
-  // Add other run properties as needed
+  description: string;
+  day_of_week: string;
+  hospital_name: string;
+  hospital_address: string;
+  contact_number: string;
+  route_description: string;
+  items_to_remember: string;
+  building_access: string;
+  // Add any other fields that your run objects might have
 }
+
 
 
 interface Stop {
@@ -82,7 +90,15 @@ const DevDash = () => {
             <ul className="list-disc pl-5">
               {runs.map((run) => (
                 <li key={run.run_id} className="py-1">
-                  {run.run_label}: Run
+                  <p>Run Label: {run.run_label}</p>
+                  <p>Hospital: {run.hospital_name}</p>
+                  <p>Day of the Week: {run.day_of_week}</p>
+                  <p>Description: {run.description}</p>
+                  <p>Address: {run.hospital_address}</p>
+                  <p>Contact Number: {run.contact_number}</p>
+                  <p>Route Description: {run.route_description}</p>
+                  <p>Items to Remember: {run.items_to_remember}</p>
+                  <p>Building Access: {run.building_access}</p>
                 </li>
               ))}
             </ul>
@@ -152,8 +168,8 @@ const DevDash = () => {
                     {driver.name}
                     <p>Email: {driver.email}</p>
                     <p>
-                      
-                      {runAssigned ? runAssigned.run_label : 'No assigned run'}:{' '}Run
+                      {runAssigned ? runAssigned.run_label : 'No assigned run'}:{' '}
+                      Run
                     </p>
                   </li>
                 );
