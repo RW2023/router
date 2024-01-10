@@ -6,10 +6,16 @@ import SubHeading from './ui/SubHeading';
 import Loading from './ui/Loading';
 
 interface Run {
-  run_id: number; // replacing 'id' with 'run_id'
-  description: string;
+  run_id: number;
   run_label: string;
-  // Add other run properties as needed
+  description: string;
+  day_of_week: string;
+  hospital_name: string;
+  hospital_address: string;
+  contact_number: string;
+  route_description: string;
+  items_to_remember: string;
+  building_access: string;
 }
 
 
