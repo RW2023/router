@@ -22,7 +22,7 @@ export default function Home() {
             <SubHeading title="route information application" />
           </div>
           <Link
-          href="/devdash"
+          href="/login"
           >
             <button
               type="submit"

@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const { data, error } = await supabase
-    .from('runs') // Replace with your table name
+    .from('stops') // Replace with your table name
     .select('*')
     .limit(1);
 
