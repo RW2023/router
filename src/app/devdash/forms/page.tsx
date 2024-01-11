@@ -53,8 +53,9 @@ const Page: FC<Props> = (): JSX.Element => {
         <DriverForm />
 
         <SubHeading title="Drivers" />
-        <div className="card bg-base-300 shadow-xl">
-          <div className="card-body grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="card-compact bg-base-300 shadow-xl m-4 w-3/4 mx-auto rounded-box p-1">
+          <SubHeading title="all drivers" />
+          <div className="card-body grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 drop-shadow-md">
             {drivers.map((driver) => {
               const runAssigned = runs.find(
                 (run) => run.run_id === Number(driver.run_assignment),
