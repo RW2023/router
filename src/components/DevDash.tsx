@@ -146,32 +146,7 @@ const DevDash = () => {
         animate="visible"
         variants={variants}
         transition={{ duration: 0.5, delay: 0.4 }}
-      >
-        <SubHeading title="Drivers" />
-        <div className="card bg-base-300 shadow-xl">
-          <div className="card-body">
-            <ul className="list-disc pl-5">
-              {drivers.map((driver) => {
-                // Find the run that matches the driver's run assignment
-                const runAssigned = runs.find(
-                  (run) => run.run_id === Number(driver.run_assignment),
-                );
-
-                return (
-                  <li key={driver.id} className="py-1">
-                    {driver.name}
-                    <p>Email: {driver.email}</p>
-                    <p>
-                      {runAssigned ? runAssigned.run_label : 'No assigned run'}:
-                      Run
-                    </p>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
-      </motion.div>
+      ></motion.div>
     </div>
   );
 };
