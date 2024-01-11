@@ -98,13 +98,13 @@ const DevDash = () => {
                  return (
                    <li
                      key={run.run_id}
-                     className="card-compact bg-base-100 shadow-xl p-3 md:p-2 lg:p-4"
+                     className="card-compact bg-base-300 shadow-xl p-3 md:p-2 lg:p-4"
                    >
                      <SubHeading title={`${run.run_label} Run`} />
-                     <img src={imageUrl} alt="Site" 
-                     className='mx-auto'
-                     />
-                     <p>
+                    <img src={imageUrl} alt="Site" 
+                      className='mx-auto p-1 border border-secondary bg-base-100 rounded-md m-1'
+                    />
+                    <p className='p-1 border border-secondary bg-base-100'>
                        <strong>Hospital:</strong> {run.hospital_name}
                      </p>
                      <p>
