@@ -24,8 +24,8 @@ const AuthForm = () => {
         style={{
           backgroundImage: `url(/img/hero3.png)`,
           backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       >
         <div className="flex justify-center items-center h-screen bg-base-300">
@@ -41,7 +41,7 @@ const AuthForm = () => {
               <div className="mb-4">
                 <label
                   htmlFor="username"
-                  className="block text-gray-700 text-sm font-bold mb-2"
+                  className="block text-headline text-sm font-bold mb-2"
                 >
                   Username
                 </label>
@@ -50,7 +50,7 @@ const AuthForm = () => {
                   id="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-headline leading-tight focus:outline-none focus:shadow-outline"
                   placeholder="Choose a username"
                 />
               </div>
@@ -59,7 +59,7 @@ const AuthForm = () => {
             <div className="mb-4">
               <label
                 htmlFor="email"
-                className="block text-gray-700 text-sm font-bold mb-2"
+                className="block text-headline text-sm font-bold mb-2"
               >
                 Email
               </label>
@@ -68,7 +68,7 @@ const AuthForm = () => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-headline leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Your email"
               />
             </div>
@@ -76,7 +76,7 @@ const AuthForm = () => {
             <div className="mb-6">
               <label
                 htmlFor="password"
-                className="block text-gray-700 text-sm font-bold mb-2"
+                className="block text-headline text-sm font-bold mb-2"
               >
                 Password
               </label>
@@ -92,13 +92,13 @@ const AuthForm = () => {
 
             <button
               type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="w-full hover:bg-blue-500 bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               {isLoginMode ? 'Sign In' : 'Register'}
             </button>
 
             <p className="mt-4 text-sm text-center">
-              {isLoginMode ? 'Need an account?' : 'Already have an account?'}
+              {isLoginMode ? 'Need an account? ' : 'Already have an account? '}
               <button
                 type="button"
                 onClick={toggleMode}
