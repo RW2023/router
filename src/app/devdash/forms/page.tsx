@@ -54,24 +54,25 @@ const Page: FC<Props> = (): JSX.Element => {
 
         <SubHeading title="Drivers" />
         <div className="card bg-base-300 shadow-xl">
-          <div className="card-body">
-            <ul className="list-disc pl-5">
-              {drivers.map((driver) => {
-                const runAssigned = runs.find(
-                  (run) => run.run_id === Number(driver.run_assignment),
-                );
-                return (
-                  <li key={driver.id} className="py-1">
-                    {driver.name}
-                    <p>Email: {driver.email}</p>
-                    <p>
-                      {runAssigned ? runAssigned.run_label : 'No assigned run'}:
-                      Run
-                    </p>
-                  </li>
-                );
-              })}
-            </ul>
+          <div className="card-body grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {drivers.map((driver) => {
+              const runAssigned = runs.find(
+                (run) => run.run_id === Number(driver.run_assignment),
+              );
+              return (
+                <div
+                  key={driver.id}
+                  className="border p-4 rounded-lg bg-base-100"
+                >
+                  <h3 className="font-bold">{driver.name}</h3>
+                  <p>Email: {driver.email}</p>
+                  <p>
+                    {runAssigned ? runAssigned.run_label : 'No assigned run'}:
+                    Run
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
