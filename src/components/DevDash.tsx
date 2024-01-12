@@ -91,47 +91,56 @@ const DevDash = () => {
                   const correspondingStop = stops.find(
                     (stop) => stop.run_id === run.run_id,
                   );
+                  // Safe access to stop_order
+                  const stopOrder = correspondingStop?.stop_order ?? 'N/A'; // 'N/A' or some default value if stop is not found
+
                   const imageUrl = correspondingStop
                     ? correspondingStop.image_url
                     : placeholderImagePath;
 
                   return (
-                    <li
-                      key={run.run_id}
-                      className="card-compact bg-base-300 shadow-xl p-3 md:p-2 lg:p-4"
-                    >
-                      <SubHeading title={`${run.run_label} Run`} />
+                    <li key={run.run_id} className="rounded-box border border-1 p-3 card-compact">
+                      <div className="card-title bg-base-100  p-3 mb-4 rounded border border-1">
+                        <SubHeading title={`${run.run_label} Run`} />
+                        <SubHeading title={`Stop: ${stopOrder}`} />{' '}
+                      </div>
                       <img
                         src={imageUrl}
                         alt="Site"
-                        className="mx-auto p-1 border border-secondary bg-base-100 rounded-md m-1"
+                        className="mx-auto p-1 border border-1 bg-base-100 rounded-md m-1"
                       />
-                      <p className="p-1 border border-secondary bg-base-100">
-                        <strong>Hospital:</strong> {run.hospital_name}
-                      </p>
-                      <p>
-                        <strong>Day of the Week:</strong> {run.day_of_week}
-                      </p>
-                      <p>
-                        <strong>Description:</strong> {run.description}
-                      </p>
-                      <p>
-                        <strong>Address:</strong> {run.hospital_address}
-                      </p>
-                      <p>
-                        <strong>Contact Number:</strong> {run.contact_number}
-                      </p>
-                      <p>
-                        <strong>Route Description:</strong>{' '}
-                        {run.route_description}
-                      </p>
-                      <p>
-                        <strong>Items to Remember:</strong>{' '}
-                        {run.items_to_remember}
-                      </p>
-                      <p>
-                        <strong>Building Access:</strong> {run.building_access}
-                      </p>
+                      <div className="p-1 border border-1 bg-base-100 rounded mt-4 mb-4">
+                        <SubHeading
+                          title={run.hospital_name}
+                          iconClass="fas fa-hospital"
+                        />
+                      </div>
+                      <div className="border border-1 p-3 bg-base-200">
+                        <p>
+                          <strong>Day of the Week:</strong> {run.day_of_week}
+                        </p>
+                        <p>
+                          <strong>Description:</strong> {run.description}
+                        </p>
+                        <p>
+                          <strong>Address:</strong> {run.hospital_address}
+                        </p>
+                        <p>
+                          <strong>Contact Number:</strong> {run.contact_number}
+                        </p>
+                        <p>
+                          <strong>Route Description:</strong>{' '}
+                          {run.route_description}
+                        </p>
+                        <p>
+                          <strong>Items to Remember:</strong>{' '}
+                          {run.items_to_remember}
+                        </p>
+                        <p>
+                          <strong>Building Access:</strong>{' '}
+                          {run.building_access}
+                        </p>
+                      </div>
                     </li>
                   );
                 })}
