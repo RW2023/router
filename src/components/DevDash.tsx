@@ -1,161 +1,147 @@
 /* eslint-disable @next/next/no-img-element */
-// src/components/DevDash.tsx
 import React, { useState, useEffect } from 'react';
-import { getRuns, getStops, getDrivers } from '@/utils/supabaseClient';
+import { getRuns, getStops, getRunStops } from '@/utils/supabaseClient';
 import { motion } from 'framer-motion';
 import SubHeading from './ui/SubHeading';
 import Loading from './ui/Loading';
+
 
 interface Run {
   run_id: number;
   run_label: string;
   description: string;
   day_of_week: string;
-  hospital_name: string;
-  hospital_address: string;
-  contact_number: string;
   route_description: string;
   items_to_remember: string;
   building_access: string;
-  // Add any other fields that your run objects might have
 }
 
 interface Stop {
   stop_id: number;
-  run_id: number;
-  stop_order: number;
+  hospital_name: string;
+  hospital_address: string;
   delivery_instructions: string;
   pickup_instructions: string;
   image_url: string;
+  stop_name: string;
 }
 
-interface Driver {
-  id: number;
-  name: string;
-  email: string;
-  run_assignment: string;
+interface RunStop {
+  run_stop_id: number;
+  run_id: number;
+  stop_id: number;
+  stop_order: number;
+}
+
+interface CombinedRunData {
+  run_id: number;
   run_label: string;
-  // Add other driver properties as needed
+  description: string;
+  day_of_week: string;
+  route_description: string;
+  items_to_remember: string;
+  building_access: string;
+  stops: Stop[];
 }
 
 const DevDash = () => {
-  const [runs, setRuns] = useState<Run[]>([]);
-  const [stops, setStops] = useState<Stop[]>([]);
-  const [drivers, setDrivers] = useState<Driver[]>([]);
+  const [combinedRunData, setCombinedRunData] = useState<CombinedRunData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Fetch runs, stops, and drivers data
-    getRuns().then((data) => setRuns(data || []));
-    getStops().then((data) => setStops(data || []));
-    getDrivers().then((data) => setDrivers(data || []));
-  }, []);
-
-  // Animation variants for framer-motion
   const variants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
   };
 
-  const placeholderImagePath = '/img/placeholder.png'; // Place the image in the public directory and use the path as a string
-
-  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     setIsLoading(true);
-    getRuns().then((data) => {
-      setRuns(data || []);
-      setIsLoading(false); // Set loading to false after data is fetched
-    });
-    // ... fetch other data
-  }, []);
+    Promise.all([getRuns(), getStops(), getRunStops()])
+      .then(([runsData, stopsData, runStopsData]) => {
+        if (runsData && stopsData && runStopsData) {
+          const combinedData = runsData.map((run) => {
+            const stopsForRun = runStopsData
+              .filter((rs) => rs.run_id === run.run_id)
+              .map((rs) => {
+                const stop = stopsData.find(
+                  (stop) => stop.stop_id === rs.stop_id,
+                );
+                return stop ? { ...stop, stop_order: rs.stop_order } : null;
+              })
+              .filter((stop) => stop !== null);
 
-  if (isLoading) {
-    return <Loading />;
-  }
+            return { ...run, stops: stopsForRun };
+          });
+
+          setCombinedRunData(combinedData);
+          console.log(combinedData);
+        }
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        setIsLoading(false);
+      });
+  }, []);
 
   return (
     <div className="dev-dash p-4 space-y-4 lg:w-3/4 mx-auto rounded-box card">
-      <motion.div
-        className="runs mb-4"
-        initial="hidden"
-        animate="visible"
-        variants={variants}
-        transition={{ duration: 0.5 }}
-      >
-        <SubHeading title="Runs" />
-        <div className="card bg-base-300 shadow-2xl">
-          <SubHeading title="Run List" />
-          <div className="card-body">
-            <div className="container mx-auto p-1">
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {runs.map((run) => {
-                  const correspondingStop = stops.find(
-                    (stop) => stop.run_id === run.run_id,
-                  );
-                  // Safe access to stop_order
-                  const stopOrder = correspondingStop?.stop_order ?? 'N/A'; // 'N/A' or some default value if stop is not found
-
-                  const imageUrl = correspondingStop
-                    ? correspondingStop.image_url
-                    : placeholderImagePath;
-
-                  return (
-                    <li key={run.run_id} className="rounded-box border border-1 p-3 card-compact">
-                      <div className="card-title bg-base-100  p-3 mb-4 rounded border border-1">
-                        <SubHeading title={`${run.run_label} Run`} />
-                        <SubHeading title={`Stop: ${stopOrder}`} />{' '}
-                      </div>
-                      <img
-                        src={imageUrl}
-                        alt="Site"
-                        className="mx-auto p-1 border border-1 bg-base-100 rounded-md m-1"
-                      />
-                      <div className="p-1 border border-1 bg-base-100 rounded mt-4 mb-4">
-                        <SubHeading
-                          title={run.hospital_name}
-                          iconClass="fas fa-hospital"
+      {isLoading ? (
+        <Loading />
+      ) : (
+        combinedRunData.map((run) => (
+          <motion.div
+            key={run.run_id}
+            className="run-item mb-4"
+            initial="hidden"
+            animate="visible"
+            variants={variants}
+            transition={{ duration: 0.5 }}
+          >
+            <SubHeading title={`${run.run_label} Run: ${run.description}`} />
+            <div className="card bg-base-300 shadow-2xl">
+              <div className="card-body">
+                <h3 className="text-lg font-semibold">Stops for this Run:</h3>
+                <ul className="space-y-2 mt-2">
+                  {run.stops.map((stop, index) => (
+                    <li
+                      key={index}
+                      className="stop-item bg-base-200 p-2 rounded"
+                    >
+                      <h4 className="text-md font-semibold">
+                        {stop.stop_name}
+                      </h4>
+                      <p>
+                        <strong>Address:</strong> {stop.hospital_address}
+                      </p>
+                      <p>
+                        <strong>Delivery Instructions:</strong>{' '}
+                        {stop.delivery_instructions}
+                      </p>
+                      <p>
+                        <strong>Pickup Instructions:</strong>{' '}
+                        {stop.pickup_instructions}
+                      </p>
+                      {stop.image_url ? (
+                        <img
+                          src={stop.image_url}
+                          alt={stop.stop_name}
+                          className="mt-2 max-w-xs"
                         />
-                      </div>
-                      <div className="border border-1 p-3 bg-base-200">
-                        <p>
-                          <strong>Day of the Week:</strong> {run.day_of_week}
-                        </p>
-                        <p>
-                          <strong>Description:</strong> {run.description}
-                        </p>
-                        <p>
-                          <strong>Address:</strong> {run.hospital_address}
-                        </p>
-                        <p>
-                          <strong>Contact Number:</strong> {run.contact_number}
-                        </p>
-                        <p>
-                          <strong>Route Description:</strong>{' '}
-                          {run.route_description}
-                        </p>
-                        <p>
-                          <strong>Items to Remember:</strong>{' '}
-                          {run.items_to_remember}
-                        </p>
-                        <p>
-                          <strong>Building Access:</strong>{' '}
-                          {run.building_access}
-                        </p>
-                      </div>
+                      ) : (
+                        <img
+                          src="/img/placeholder.png"
+                          alt="Placeholder"
+                          className="mt-2 max-w-xs"
+                        />
+                      )}
                     </li>
-                  );
-                })}
-              </ul>
+                  ))}
+                </ul>
+              </div>
             </div>
-          </div>
-        </div>
-      </motion.div>
-      <motion.div
-        className="drivers mb-4"
-        initial="hidden"
-        animate="visible"
-        variants={variants}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      ></motion.div>
+          </motion.div>
+        ))
+      )}
     </div>
   );
 };
