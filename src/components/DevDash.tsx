@@ -125,13 +125,13 @@ const DevDash = () => {
                         <img
                           src={stop.image_url}
                           alt={stop.stop_name}
-                          className="mt-2 max-w-xs"
+                          className="w-full max-w-xs object-cover"
                         />
                       ) : (
                         <img
                           src="/img/placeholder.png"
                           alt="Placeholder"
-                          className="mt-2 max-w-xs"
+                          className="w-full max-w-xs object-cover"
                         />
                       )}
                     </li>
