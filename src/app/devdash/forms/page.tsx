@@ -4,7 +4,6 @@ import React, { useState, useEffect, FC } from 'react';
 import Heading from '@/components/ui/Heading';
 import DriverForm from '@/components/forms/Driver'; // Assuming Driver is a form
 import SubHeading from '@/components/ui/SubHeading';
-import Layout from './layout';
 import { supabase } from '@/utils/supabaseClient'; // Adjust the path as necessary
 
 interface Props {}
@@ -46,7 +45,7 @@ const Page: FC<Props> = (): JSX.Element => {
   }, []);
 
   return (
-    <Layout>
+    
       <div>
         <Heading title="Forms" iconClass="fas fa-file-signature" />
         <SubHeading title="Driver Form" />
@@ -77,7 +76,7 @@ const Page: FC<Props> = (): JSX.Element => {
           </div>
         </div>
       </div>
-    </Layout>
+    
   );
 };
 
