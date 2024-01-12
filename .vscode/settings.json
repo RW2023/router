@@ -4,6 +4,7 @@
         "LHLS",
         "nextjs",
         "Postgrest",
+        "runstops",
         "supabase"
     ]
 }
