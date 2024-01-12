@@ -1,3 +1,6 @@
+//src/components/forms/Driver.tsx
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/utils/supabaseClient';
 import { Run } from '@/utils/types'; // Ensure the path is correct
@@ -45,7 +48,7 @@ const DriverForm = () => {
       setMessage('Driver added successfully');
       setFormData({ name: '', email: '', run_assignment: '' });
     } catch (error) {
-      setMessage(error.message);
+      setMessage((error as Error).message);
     } finally {
       setSubmitting(false);
     }
@@ -87,10 +90,11 @@ const DriverForm = () => {
         />
       </div>
       <div className="form-control">
-        <label className="label">
+        <label htmlFor="run_assignment" className="label">
           <span className="label-text">Run Assignment</span>
         </label>
         <select
+          id="run_assignment"
           name="run_assignment"
           value={formData.run_assignment}
           onChange={handleChange}
@@ -105,6 +109,7 @@ const DriverForm = () => {
           ))}
         </select>
       </div>
+
       <button
         type="submit"
         className="btn btn-primary mt-4"
