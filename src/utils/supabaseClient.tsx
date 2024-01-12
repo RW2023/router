@@ -24,6 +24,15 @@ export const getStops = async () => {
   return stops;
 };
 
+export const getRunStops = async () => {
+  let { data: runStops, error } = await supabase
+    .from('runstops') // Make sure the table name is correct
+    .select('*'); // Selects all columns
+
+  if (error) throw error;
+  return runStops;
+};
+
 export const getDrivers = async () => {
   let { data: drivers, error } = await supabase
     .from('drivers') // Make sure the table name is correct
