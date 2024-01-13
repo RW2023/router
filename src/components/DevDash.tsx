@@ -73,7 +73,6 @@ const DevDash = () => {
           });
 
           setCombinedRunData(combinedData);
-          console.log(combinedData);
         }
         setIsLoading(false);
       })
