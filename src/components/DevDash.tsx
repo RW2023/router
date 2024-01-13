@@ -110,17 +110,6 @@ const DevDash = () => {
                       <h4 className="text-md font-semibold">
                         {stop.stop_name}
                       </h4>
-                      <p>
-                        <strong>Address:</strong> {stop.hospital_address}
-                      </p>
-                      <p>
-                        <strong>Delivery Instructions:</strong>{' '}
-                        {stop.delivery_instructions}
-                      </p>
-                      <p>
-                        <strong>Pickup Instructions:</strong>{' '}
-                        {stop.pickup_instructions}
-                      </p>
                       {stop.image_url ? (
                         <img
                           src={stop.image_url}
@@ -134,6 +123,17 @@ const DevDash = () => {
                           className="w-full max-w-xs object-cover  bg-base-200 p-1 rounded-box border border-black"
                         />
                       )}
+                      <p>
+                        <strong>Address:</strong> {stop.hospital_address}
+                      </p>
+                      <p>
+                        <strong>Delivery Instructions:</strong>{' '}
+                        {stop.delivery_instructions}
+                      </p>
+                      <p>
+                        <strong>Pickup Instructions:</strong>{' '}
+                        {stop.pickup_instructions}
+                      </p>
                     </li>
                   ))}
                 </ul>
