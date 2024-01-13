@@ -98,7 +98,7 @@ const DevDash = () => {
             transition={{ duration: 0.5 }}
           >
             <SubHeading title={`${run.run_label} Run: ${run.description}`} />
-            <div className="card bg-base-300 shadow-2xl">
+            <div className="card border border-1 bg-base-300 shadow-2xl">
               <div className="card-body">
                 <h3 className="text-lg font-semibold">Stops for this Run:</h3>
                 <ul className="space-y-2 mt-2">
@@ -125,13 +125,13 @@ const DevDash = () => {
                         <img
                           src={stop.image_url}
                           alt={stop.stop_name}
-                          className="w-full max-w-xs object-cover"
+                          className="w-full max-w-xs object-cover  bg-base-200 p-1 rounded-box border border-black"
                         />
                       ) : (
                         <img
                           src="/img/placeholder.png"
                           alt="Placeholder"
-                          className="w-full max-w-xs object-cover"
+                          className="w-full max-w-xs object-cover  bg-base-200 p-1 rounded-box border border-black"
                         />
                       )}
                     </li>
