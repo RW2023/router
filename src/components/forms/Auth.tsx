@@ -1,116 +1,132 @@
-//src
-'use client'
-import React, { useState } from 'react';
-// Include other necessary imports here
+'use client';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'; // Updated import
+import { supabase } from '@/utils/supabaseClient';
 
 const AuthForm = () => {
-    const [isLoginMode, setIsLoginMode] = useState(true);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState('');
+  const router = useRouter();
 
-    const toggleMode = () => {
-        setIsLoginMode(!isLoginMode);
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: session } = await supabase.auth.getSession();
+      if (session) {
+        setError('Already logged in. Redirecting to dashboard...');
+        setTimeout(() => {
+          router.push('/devdash');
+        }, 7000); // Redirect after 7 seconds
+      }
     };
+    checkSession();
+  }, [router]);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        // Add login or registration logic here
-    };
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setMessage('');
 
-    return (
-      <div
-        className="flex justify-center items-center h-screen bg-base-100"
-        style={{
-          backgroundImage: `url(/img/hero3.png)`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <div className="flex justify-center items-center h-screen bg-base-300">
-          <form
-            onSubmit={handleSubmit}
-            className="p-10 bg-base-100 rounded-lg shadow-xl"
+    try {
+      if (isLogin) {
+        // Handle login
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (error) throw error;
+      } else {
+        // Handle registration
+        const { error } = await supabase.auth.signUp({ email, password });
+        if (error) throw error;
+        setMessage(
+          'Registration successful, please check your email to verify.',
+        );
+      }
+    } catch (error) {
+      setMessage((error as Error).message);
+    }
+  };
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      setMessage(error.message);
+    } else {
+      setMessage('Logged out successfully.');
+      router.push('/login');
+    }
+  };
+
+  return (
+    <div className="flex justify-center items-center h-screen bg-base-100">
+      <div className="flex justify-center items-center h-screen bg-base-300 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6">
+        <form
+          onSubmit={handleSubmit}
+          className="p-5 bg-base-100 rounded-lg shadow-xl"
+        >
+          <h2 className="text-2xl font-bold mb-5 text-headline drop-shadow-md">
+            {isLogin ? 'Login' : 'Register'}
+          </h2>
+
+          {message && <p className="mb-4 text-red-500">{message}</p>}
+
+          <div className="mb-4">
+            <label htmlFor="email" className="label">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input input-bordered w-full"
+              required
+            />
+            bash Copy code
+          </div>
+
+          <div className="mb-6">
+            <label htmlFor="password" className="label">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input input-bordered w-full"
+              required
+            />
+          </div>
+
+          <button type="submit" className="btn btn-primary w-full">
+            {isLogin ? 'Sign In' : 'Register'}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="btn btn-error w-full mt-4"
           >
-            <h2 className="text-2xl font-bold mb-5 text-headline drop-shadow-md">
-              {isLoginMode ? 'Login' : 'Register'}
-            </h2>
+            Logout
+          </button>
 
-            {!isLoginMode && (
-              <div className="mb-4">
-                <label
-                  htmlFor="username"
-                  className="block text-headline text-sm font-bold mb-2"
-                >
-                  Username
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-headline leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder="Choose a username"
-                />
-              </div>
-            )}
-
-            <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-headline text-sm font-bold mb-2"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-headline leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Your email"
-              />
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="password"
-                className="block text-headline text-sm font-bold mb-2"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline bg-base-300"
-                placeholder="Your password"
-              />
-            </div>
-
+          <p className="mt-4 text-sm text-center">
+            {isLogin ? 'Need an account? ' : 'Already have an account? '}
             <button
-              type="submit"
-              className="w-full hover:bg-blue-500 bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="button"
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-blue-500 hover:text-blue-700"
             >
-              {isLoginMode ? 'Sign In' : 'Register'}
+              {isLogin ? 'Sign Up' : 'Login'}
             </button>
-
-            <p className="mt-4 text-sm text-center">
-              {isLoginMode ? 'Need an account? ' : 'Already have an account? '}
-              <button
-                type="button"
-                onClick={toggleMode}
-                className="text-blue-500 hover:text-blue-700 font-bold"
-              >
-                {isLoginMode ? 'Register' : 'Login'}
-              </button>
-            </p>
-          </form>
-        </div>
+          </p>
+        </form>
       </div>
-    );
+    </div>
+  );
 };
 
 export default AuthForm;
