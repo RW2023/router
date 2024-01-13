@@ -111,17 +111,21 @@ const DevDash = () => {
                         {stop.stop_name}
                       </h4>
                       {stop.image_url ? (
-                        <img
-                          src={stop.image_url}
-                          alt={stop.stop_name}
-                          className="w-full max-w-xs object-cover  bg-base-200 p-1 rounded-box border border-black"
-                        />
+                        <a href={stop.image_url} target="_blank" rel="noopener noreferrer">
+                          <img
+                            src={stop.image_url}
+                            alt={stop.stop_name}
+                            className="w-full max-w-xs object-cover bg-base-200 p-1 rounded-box border border-black"
+                          />
+                        </a>
                       ) : (
-                        <img
-                          src="/img/placeholder.png"
-                          alt="Placeholder"
-                          className="w-full max-w-xs object-cover  bg-base-200 p-1 rounded-box border border-black"
-                        />
+                        <a href="/img/placeholder.png" target="_blank" rel="noopener noreferrer">
+                          <img
+                            src="/img/placeholder.png"
+                            alt="Placeholder"
+                            className="w-full max-w-xs object-cover bg-base-200 p-1 rounded-box border border-black"
+                          />
+                        </a>
                       )}
                       <p>
                         <strong>Address:</strong> {stop.hospital_address}
