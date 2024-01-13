@@ -11,18 +11,28 @@ const AuthForm = () => {
   const [error, setError] = useState('');
   const router = useRouter();
 
-  useEffect(() => {
-    const checkSession = async () => {
-      const { data: session } = await supabase.auth.getSession();
-      if (session) {
-        setError('Already logged in. Redirecting to dashboard...');
-        setTimeout(() => {
-          router.push('/devdash');
-        }, 7000); // Redirect after 7 seconds
-      }
-    };
-    checkSession();
-  }, [router]);
+useEffect(() => {
+  const checkSession = async () => {
+    const { data: session, error } = await supabase.auth.getSession();
+    console.log('Session:', session);
+if (session) {
+  // User is logged in
+  setError('Already logged in. Redirecting to dashboard...');
+  // setTimeout(() => {
+  //   router.push('/devdash');
+  // }, 7000);
+} else {
+  // User is not logged in
+  console.log('No active session. User is not logged in.');
+  // Additional logic for when there is no user session
+  // For example, you might want to redirect to a login page,
+  // or update the UI to reflect the logged-out state.
+}
+
+  };
+
+  checkSession();
+}, [router]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -61,7 +71,7 @@ const AuthForm = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-base-100">
-      <div className="flex justify-center items-center h-screen bg-base-300 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6">
+      <div className="flex justify-center items-center h-screen  bg-base-300  sm:w-full">
         <form
           onSubmit={handleSubmit}
           className="p-5 bg-base-100 rounded-lg shadow-xl"
@@ -84,7 +94,6 @@ const AuthForm = () => {
               className="input input-bordered w-full"
               required
             />
-            bash Copy code
           </div>
 
           <div className="mb-6">
