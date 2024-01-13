@@ -7,7 +7,7 @@ interface Props {}
 
 const page: FC<Props> = (props): JSX.Element => {
   return (
-    <div className="m-3">
+    <div className="m-3 min-h-screen">
       <Heading title="Dev Dash" />
       <DevDash />
     </div>
