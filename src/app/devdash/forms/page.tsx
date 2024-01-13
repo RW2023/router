@@ -49,7 +49,7 @@ const Page: FC = (): JSX.Element => {
   }, []);
 
   return (
-    <div>
+    <div className='min-h-screen'>
       <Heading title="Forms" iconClass="fas fa-file-signature" />
       <SubHeading title="Driver Form" />
       <DriverForm />
