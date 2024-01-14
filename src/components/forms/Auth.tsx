@@ -70,8 +70,8 @@ if (session) {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-base-100">
-      <div className="flex justify-center items-center h-screen  bg-base-300  sm:w-full">
+    <div className="flex justify-center items-center h-full w-full bg-base-100">
+      <div className="flex justify-center items-center h-full w-full bg-base-300 ">
         <form
           onSubmit={handleSubmit}
           className="p-5 bg-base-100 rounded-lg shadow-xl"
