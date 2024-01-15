@@ -1,141 +1,154 @@
+//src/components/forms/Auth.tsx
 'use client';
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'; // Updated import
-import { supabase } from '@/utils/supabaseClient';
 
-const AuthForm = () => {
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Loading from '@/components/ui/Loading';
+
+export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const [isLogin, setIsLogin] = useState(true);
-  const [error, setError] = useState('');
   const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
 
-useEffect(() => {
-  const checkSession = async () => {
-    const { data: session, error } = await supabase.auth.getSession();
-    console.log('Session:', session);
-if (session) {
-  // User is logged in
-  setError('Already logged in. Redirecting to dashboard...');
-  // setTimeout(() => {
-  //   router.push('/devdash');
-  // }, 7000);
-} else {
-  // User is not logged in
-  console.log('No active session. User is not logged in.');
-  // Additional logic for when there is no user session
-  // For example, you might want to redirect to a login page,
-  // or update the UI to reflect the logged-out state.
+  const [loading, setLoading] = useState(true);
+
+  const supabase = createClientComponentClient();
+
+interface User {
+  id: string;
+  aud: string;
+  role: string;
+  email: string;
+  email_confirmed_at: string;
+  phone: string;
+  confirmation_sent_at: string;
+  confirmed_at: string;
+  last_sign_in_at: string;
+  created_at: string;
+  updated_at: string;
+  app_metadata: {
+    provider: string;
+    providers: string[];
+  };
+  user_metadata: any; // or a more specific type if you know the structure
+  // Include other fields if necessary
 }
 
+
+  useEffect(() => {
+    async function getUser() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+     setUser(user as User | null);
+
+      setLoading(false);
+    }
+
+    getUser();
+  }, [supabase.auth]);
+
+  const handleSignUp = async () => {
+    const res = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${location.origin}/auth/callback`,
+      },
+    });
+   setUser(user as User | null);
+
+    router.refresh();
+    setEmail('');
+    setPassword('');
   };
 
-  checkSession();
-}, [router]);
+  const handleSignIn = async () => {
+    const res = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    setUser(user as User | null);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setMessage('');
-
-    try {
-      if (isLogin) {
-        // Handle login
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-      } else {
-        // Handle registration
-        const { error } = await supabase.auth.signUp({ email, password });
-        if (error) throw error;
-        setMessage(
-          'Registration successful, please check your email to verify.',
-        );
-      }
-    } catch (error) {
-      setMessage((error as Error).message);
-    }
+    router.refresh();
+    setEmail('');
+    setPassword('');
   };
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      setMessage(error.message);
-    } else {
-      setMessage('Logged out successfully.');
-      router.push('/login');
-    }
+    await supabase.auth.signOut();
+    router.refresh();
+    setUser(null);
   };
 
-  return (
-    <div className="flex justify-center items-center h-full w-full bg-base-100">
-      <div className="flex justify-center items-center h-full w-full bg-base-300 ">
-        <form
-          onSubmit={handleSubmit}
-          className="p-5 bg-base-100 rounded-lg shadow-xl"
-        >
-          <h2 className="text-2xl font-bold mb-5 text-headline drop-shadow-md">
-            {isLogin ? 'Login' : 'Register'}
-          </h2>
+  // console.log({ loading, user });
 
-          {message && <p className="mb-4 text-red-500">{message}</p>}
+  if (loading) {
+    return <Loading />;
+  }
 
-          <div className="mb-4">
-            <label htmlFor="email" className="label">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-
-          <div className="mb-6">
-            <label htmlFor="password" className="label">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary w-full">
-            {isLogin ? 'Sign In' : 'Register'}
-          </button>
-
+  if (user) {
+    return (
+      <div className="h-screen flex flex-col justify-center items-center bg-base">
+        <div className="bg-black p-8 rounded-lg shadow-md w-96 text-center">
+          <h1 className="mb-4 text-xl font-bold">
+            You&apos;re  logged in!
+          </h1>
           <button
             type="button"
             onClick={handleLogout}
-            className="btn btn-error w-full mt-4"
+            className="w-full p-3 rounded-md bg-red-500 hover:bg-red-600 focus:outline-none"
           >
             Logout
           </button>
-
-          <p className="mt-4 text-sm text-center">
-            {isLogin ? 'Need an account? ' : 'Already have an account? '}
-            <button
-              type="button"
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-blue-500 hover:text-blue-700"
-            >
-              {isLogin ? 'Sign Up' : 'Login'}
-            </button>
-          </p>
-        </form>
+          <button
+            type="button"
+            onClick={() => router.push('/devdash')}
+            className="w-full mt-4 p-3 rounded-md bg-blue-500 text-white hover:bg-blue-600 focus:outline-none"
+          >
+            Dashboard
+          </button>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
 
-export default AuthForm;
+  return (
+    <main className="h-screen flex items-center justify-center bg-gray-800 p-6">
+      <div className="bg-gray-900 p-8 rounded-lg shadow-md w-96">
+        <input
+          type="email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+        />
+        <input
+          type="password"
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+        />
+        <button
+          type="button"
+          onClick={handleSignUp}
+          className="w-full mb-2 p-3 rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:outline-none"
+        >
+          Sign Up
+        </button>
+        <button
+          type="button"
+          onClick={handleSignIn}
+          className="w-full p-3 rounded-md bg-gray-700 text-white hover:bg-gray-600 focus:outline-none"
+        >
+          Sign In
+        </button>
+      </div>
+    </main>
+  );
+}
