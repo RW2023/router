@@ -110,7 +110,11 @@ const DevDash = () => {
                         {stop.stop_name}
                       </h4>
                       {stop.image_url ? (
-                        <a href={stop.image_url} target="_blank" rel="noopener noreferrer">
+                        <a
+                          href={stop.image_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           <img
                             src={stop.image_url}
                             alt={stop.stop_name}
@@ -118,7 +122,11 @@ const DevDash = () => {
                           />
                         </a>
                       ) : (
-                        <a href="/img/placeholder.png" target="_blank" rel="noopener noreferrer">
+                        <a
+                          href="/img/placeholder.png"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           <img
                             src="/img/placeholder.png"
                             alt="Placeholder"
@@ -126,6 +134,10 @@ const DevDash = () => {
                           />
                         </a>
                       )}
+                      <p>
+                        {' '}
+                        <strong>Building access:</strong> {run.building_access}{' '}
+                      </p>
                       <p>
                         <strong>Address:</strong> {stop.hospital_address}
                       </p>
