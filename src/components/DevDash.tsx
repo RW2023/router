@@ -46,6 +46,7 @@ interface CombinedRunData {
 
 const DevDash = () => {
   const [combinedRunData, setCombinedRunData] = useState<CombinedRunData[]>([]);
+  console.log(combinedRunData);
   const [isLoading, setIsLoading] = useState(true);
 
   const variants = {
