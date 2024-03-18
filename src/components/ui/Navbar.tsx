@@ -7,6 +7,7 @@ import SubHeading from './SubHeading';
 // import DarkModeToggle from './DarkModeToggle';
 import { motion, useAnimation } from 'framer-motion';
 import Image from 'next/image';
+import DarkToggle from './DarkToggle';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -160,8 +161,8 @@ const Navbar = () => {
               <i className="fas fa-envelope mr-2"></i>Contact
             </span>
           </Link>
-          {/* <DarkModeToggle /> */}
         </div>
+        <DarkToggle />
       </div>
     </motion.nav>
   );
