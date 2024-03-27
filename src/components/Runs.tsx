@@ -2,7 +2,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/utils/supabaseClient';
-import { Database } from '@/lib/database.types'; // Adjust the import path to your generated types
+import { Database } from '@/lib/database.types'; // Import the generated Database type
 import Loading from './ui/Loading';
 
 // Define the types for the 'runs', 'stops', and 'runstops' tables using the generated Database type
