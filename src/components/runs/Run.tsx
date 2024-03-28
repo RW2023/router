@@ -21,10 +21,10 @@ interface Stop {
 
 // Props interface for the component
 interface RunProps {
-  runId: number;
+  run_label: string;
 }
 
-const RunDetails: React.FC<RunProps> = ({ runId }) => {
+const RunDetails: React.FC<RunProps> = ({ run_label }) => {
   const [runDetails, setRunDetails] = useState<Run | null>(null);
   const [stops, setStops] = useState<Stop[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +37,7 @@ const RunDetails: React.FC<RunProps> = ({ runId }) => {
       const { data: runData, error: runError } = await supabase
         .from('runs')
         .select('*')
-        .eq('run_id', runId)
+        .eq('run_label', run_label)
         .single();
 
       if (runError) {
@@ -58,7 +58,7 @@ const RunDetails: React.FC<RunProps> = ({ runId }) => {
             await supabase
               .from('runstops')
               .select('stop_id')
-              .eq('run_id', runId)
+              .eq('run_label', run_label)
           ).data?.map((rs) => rs.stop_id) || [],
         );
 
@@ -73,7 +73,7 @@ const RunDetails: React.FC<RunProps> = ({ runId }) => {
     };
 
     fetchRunDetails();
-  }, [runId]);
+  }, [run_label]);
 
   if (isLoading) {
     return <Loading />;
