@@ -46,7 +46,7 @@ interface CombinedRunData {
   stops: Stop[];
 }
 
-const DevDash = () => {
+const Runs = () => {
   const [combinedRunData, setCombinedRunData] = useState<CombinedRunData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRunId, setSelectedRunId] = useState<number | ''>('');
@@ -173,4 +173,4 @@ const DevDash = () => {
   );
 };
 
-export default DevDash;
+export default Runs;
