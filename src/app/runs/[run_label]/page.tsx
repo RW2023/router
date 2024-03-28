@@ -2,12 +2,12 @@ import Run from '@/components/runs/Run';
 import { FC } from 'react';
 
 interface Props {
-  id: number;
+  run_label: string;
 }
 
-const page: FC<Props> = (): JSX.Element => {
+const page: FC<Props> = ({run_label}): JSX.Element => {
   return (
-<Run id />
+    <Run run_label={run_label} />
   );
 };
 
